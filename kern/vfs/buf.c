@@ -1378,6 +1378,63 @@ buffer_read_fsmanaged(struct fs *fs, daddr_t block, size_t size,
 }
 
 /*
+ * Shortcut combination of buffer_get and buffer_writeout that writes
+ * out any existing buffer if it's dirty and otherwise does nothing.
+ *
+ * This is one of the tools FSes can use to manage fsmanaged buffers,
+ * so we explicitly use buffer_writeout and not buffer_sync, as
+ * buffer_sync ignores fsmanaged buffers.
+ */
+int
+buffer_flush(struct fs *fs, daddr_t block, size_t size)
+{
+	struct buf *b;
+	int result = 0;
+
+	lock_acquire(buffer_lock);
+	bufcheck();
+
+	KASSERT(size == ONE_TRUE_BUFFER_SIZE);
+
+	b = buffer_find(fs, block);
+	if (b == NULL) {
+		goto done;
+	}
+	KASSERT(b->b_valid);
+
+	if (!b->b_dirty) {
+		/* Not dirty; don't need to do anything. */
+		goto done;
+	}
+
+	result = buffer_mark_busy(b);
+	if (result) {
+		KASSERT(result == EDEADBUF);
+		/* Buffer disappeared; no longer need to write it */
+		result = 0;
+		goto done;
+	}
+
+	if (!b->b_dirty) {
+		/* Someone else wrote it out. */
+		buffer_unmark_busy(b);
+		goto done;
+	}
+
+	/* crosscheck that we got what we asked for */
+	KASSERT(b->b_fs == fs && b->b_physblock == block);
+
+	result = buffer_writeout_internal(b);
+	/* as per the call in buffer_sync */
+	KASSERT(result != EDEADBUF);
+
+	buffer_unmark_busy(b);
+done:
+	lock_release(buffer_lock);
+	return result;
+}
+
+/*
  * Shortcut combination of buffer_get and buffer_release_and_invalidate
  * that invalidates any existing buffer and otherwise does nothing.
  */

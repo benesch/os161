@@ -9,6 +9,8 @@ code for 2.x. I am not even including its old changelog entries.)
 
 (Also see CHANGES.vm, CHANGES.syscalls, CHANGES.locks, and CHANGES.)
 
+20150126 dholland	Add buffer_flush().
+
 20150115 dholland	Version 2.0 of the file system solutions released.
 20150115 dholland	"nosync" buffers -> "fsmanaged" buffers, for clarity.
 20150115 dholland	Avoid buffercache-related hangs under memory pressure.

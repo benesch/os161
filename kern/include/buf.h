@@ -65,10 +65,10 @@ struct buf; /* Opaque. */
  *
  * Both mark the buffer busy before returning it.
  *
- * The "managed" variants are the same, except that they tag the
+ * The "fsmanaged" variants are the same, except that they tag the
  * buffer as managed by the file system. This is for use with buffers
  * that are held for a long time or are otherwise managed in some
- * complex way. Getting a buffer as "managed" has the following
+ * complex way. Getting a buffer as "fsmanaged" has the following
  * consequences:
  *    - It does not participate in buffer reservation. (Thus, it
  *      doesn't have to belong to any one thread and can be used
@@ -76,6 +76,9 @@ struct buf; /* Opaque. */
  *    - The syncer (and explicit sync calls like sync_fs_buffers)
  *      will skip over it until it's released; the file system is
  *      responsible for writing out any managed buffers it's holding.
+ *
+ * buffer_flush looks for an existing buffer and writes it out (if
+ * dirty) immediately without returning it.
  *
  * buffer_drop looks for an existing buffer and invalidates it
  * immediately without returning it.
@@ -87,6 +90,7 @@ int buffer_get_fsmanaged(struct fs *fs, daddr_t block, size_t size,
 			 struct buf **ret);
 int buffer_read_fsmanaged(struct fs *fs, daddr_t block, size_t size,
 			  struct buf **ret);
+int buffer_flush(struct fs *fs, daddr_t block, size_t size);
 void buffer_drop(struct fs *fs, daddr_t block, size_t size);
 
 /*
