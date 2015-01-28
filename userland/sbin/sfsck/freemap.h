@@ -41,6 +41,7 @@
 typedef enum {
 	B_SUPERBLOCK,	/* Block that is the superblock */
 	B_FREEMAPBLOCK,	/* Block used by free-block bitmap */
+	B_JOURNAL,	/* Block in the journal */
 	B_INODE,	/* Block that is an inode */
 	B_IBLOCK,	/* Indirect (or doubly-indirect etc.) block */
 	B_DIRDATA,	/* Data block of a directory */
