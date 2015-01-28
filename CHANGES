@@ -11,6 +11,8 @@ various other people, all of whom are (hopefully) listed below.
 
 ------------------------------------------------------------
 
+20150127 dholland	Patch more Linux build problems caused by glibc bugs.
+
 20150115 dholland	OS/161 2.0 released.
 20150113 dholland	Drop to the debugger on panic.
 20150113 dholland	Document parallelvm -w.
