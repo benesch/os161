@@ -1304,7 +1304,7 @@ buffer_read_internal(struct fs *fs, daddr_t block, size_t size, bool fsmanaged,
 		/* may lose (and then re-acquire) lock here */
 		result = buffer_readin(*ret);
 		if (result) {
-			buffer_release(*ret);
+			buffer_release_internal(*ret);
 			*ret = NULL;
 			return result;
 		}

@@ -9,6 +9,7 @@ code for 2.x. I am not even including its old changelog entries.)
 
 (Also see CHANGES.vm, CHANGES.syscalls, CHANGES.locks, and CHANGES.)
 
+20150127 dholland	Fix error path deadlock in buffer_read().
 20150126 dholland	Add buffer_flush().
 
 20150115 dholland	Version 2.0 of the file system solutions released.
