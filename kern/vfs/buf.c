@@ -238,6 +238,11 @@ static struct cv *buffer_reserve_cv;
 /* Macro for applying a NUM/DENOM pair. */
 #define SCALE(x, K) (((x) * K##_NUM) / K##_DENOM)
 
+/*
+ * Forward declaration (XXX: reorg to make this go away)
+ */
+static void buffer_release_internal(struct buf *b);
+
 ////////////////////////////////////////////////////////////
 // state invariants
 
