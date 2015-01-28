@@ -36,8 +36,7 @@
  */
 
 
-/* This is only actually available if OPT_SYNCHPROBS is set. */
-int whalemating(int, char **);
+/* These are only actually available if OPT_SYNCHPROBS is set. */
 int elves(int, char**);
 int airballoon(int, char**);
 

@@ -525,9 +525,9 @@ static const char *mainmenu[] = {
 	"[?o] Operations menu                ",
 	"[?t] Tests menu                     ",
 #if OPT_SYNCHPROBS
-	"[sp1] Whale Mating                  ",
+	"[sp1] Elves                         ",
+	"[sp2] Air Balloon                   ",
 #if 0
-	"[sp2] Cat/mouse                     ",
 	"[sp3] Stoplight                     ",
 #endif
 #endif
@@ -582,9 +582,9 @@ static struct {
 
 #if OPT_SYNCHPROBS
 	/* in-kernel synchronization problem(s) */
-	{ "sp1",	whalemating },
+	{ "sp1",	elves },
+	{ "sp2",	airballoon },
 #if 0
-	{ "sp2",	catmouse },
 	{ "sp3",	stoplight },
 #endif
 #endif
