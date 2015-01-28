@@ -27,62 +27,50 @@
  * SUCH DAMAGE.
  */
 
-#ifndef _TEST_H_
-#define _TEST_H_
+#include <types.h>
+#include <lib.h>
+#include <wchan.h>
+#include <thread.h>
+#include <synch.h>
+#include <test.h>
+#include <kern/errno.h>
+#include "common.h"
 
-/*
- * Declarations for test code and other miscellaneous high-level
- * functions.
- */
+void
+thread_fork_or_panic(const char *name, struct proc *proc,
+		     void (*func)(void *, unsigned long),
+		     void *data1, unsigned long data2)
+{
+	int result;
 
+	result = thread_fork(name, proc, func, data1, data2);
+	if (result) {
+		panic("thread_fork: %s\n", strerror(result));
+	}
+}
 
-/* This is only actually available if OPT_SYNCHPROBS is set. */
-int whalemating(int, char **);
-int elves(int, char**);
-int airballoon(int, char**);
+static
+void
+swap(unsigned *a, unsigned *b)
+{
+	unsigned tmp;
 
-/*
- * Test code.
- */
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
 
-/* data structure tests */
-int arraytest(int, char **);
-int bitmaptest(int, char **);
-int threadlisttest(int, char **);
+void
+shuffle(unsigned *array, unsigned len)
+{
+	unsigned i, swap_at;
 
-/* thread tests */
-int threadtest(int, char **);
-int threadtest2(int, char **);
-int threadtest3(int, char **);
-int semtest(int, char **);
-int locktest(int, char **);
-int cvtest(int, char **);
-int cvtest2(int, char **);
-
-/* filesystem tests */
-int fstest(int, char **);
-int readstress(int, char **);
-int writestress(int, char **);
-int writestress2(int, char **);
-int longstress(int, char **);
-int createstress(int, char **);
-int printfile(int, char **);
-
-/* other tests */
-int kmalloctest(int, char **);
-int kmallocstress(int, char **);
-int kmalloctest3(int, char **);
-int kmalloctest4(int, char **);
-int nettest(int, char **);
-
-/* Routine for running a user-level program. */
-int runprogram(char *progname);
-
-/* Kernel menu system. */
-void menu(char *argstr);
-
-/* The main function, called from start.S. */
-void kmain(char *bootstring);
-
-
-#endif /* _TEST_H_ */
+	/*
+	 * Shuffle algorithm taken from here:
+	 * http://en.wikipedia.org/wiki/Knuth_shuffle
+	 */
+	for (i = 0; i < len; i++) {
+		swap_at = i + (random() % (len - i));
+		swap(&array[i], &array[swap_at]);
+	}
+}

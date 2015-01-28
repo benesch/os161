@@ -432,7 +432,9 @@ defoption netfs
 
 defoption synchprobs
 optfile   synchprobs  synchprobs/whalemating.c
-
+optfile   synchprobs  synchprobs/common.c
+optfile   synchprobs  synchprobs/elves.c
+optfile   synchprobs  synchprobs/airballoon.c
 
 ########################################
 #                                      #
