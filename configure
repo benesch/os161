@@ -73,7 +73,7 @@ done
 
 # Check if the host system supports 4.4BSD <err.h>.
 
-echo -n "Checking for <err.h>... "
+printf "Checking for <err.h>... "
 
 cat > __conftest.c <<EOF
 #include <err.h>
@@ -105,7 +105,7 @@ fi
 
 # Check if the host system has ntohll() and htonll().
 
-echo -n "Checking for ntohll()..."
+printf "Checking for ntohll()..."
 
 cat > __conftest.c <<EOF
 #include <arpa/inet.h>
